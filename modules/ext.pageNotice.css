@@ -1,0 +1,15 @@
+/*
+ * Stylesheet for the PageNotice extension
+ *
+ * @file
+ * @ingroup Extensions
+ * @licence GNU General Public Licence 2.0 or later
+*/
+
+#top-notice, #top-notice-ns {
+	margin-bottom: 0.6em;
+}
+
+#bottom-notice, #bottom-notice-ns {
+	margin-top: 0.6em;
+}

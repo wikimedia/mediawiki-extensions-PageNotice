@@ -35,3 +35,11 @@ $wgExtensionMessagesFiles['PageNotice'] = $dir . '/PageNotice.i18n.php';
 $wgMessagesDirs['PageNotice'] = __DIR__ . '/i18n';
 $wgHooks['ArticleViewHeader'][] = 'PageNoticeHooks::renderHeader';
 $wgHooks['ArticleViewFooter'][] = 'PageNoticeHooks::renderFooter';
+
+$wgResourceModules['ext.pageNotice'] = array(
+   'styles' => array(
+       'modules/ext.pageNotice.css',
+   ),
+   'localBasePath' => $dir,
+   'remoteExtPath' => 'extensions/PageNotice',
+);

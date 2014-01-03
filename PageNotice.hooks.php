@@ -26,11 +26,19 @@ class PageNoticeHooks {
 		$header = $out->msg( "top-notice-$name" );
 		$nsheader = $out->msg( "top-notice-ns-$ns" );
 
+		$needStyles = false;
+
 		if ( !$header->isBlank() ) {
 			$out->addHTML( '<div id="top-notice">' . $header->parse() . '</div>' );
+			$needStyles = true;
 		}
 		if ( !$nsheader->isBlank() ) {
 			$out->addHTML( '<div id="top-notice-ns">' . $nsheader->parse() . '</div>' );
+			$needStyles = true;
+		}
+
+		if ( $needStyles ) {
+			$out->addModuleStyles( 'ext.pageNotice' );
 		}
 
 		return true;
@@ -50,11 +58,19 @@ class PageNoticeHooks {
 		$footer = $out->msg( "bottom-notice-$name" );
 		$nsfooter = $out->msg( "bottom-notice-ns-$ns" );
 
+		$needStyles = false;
+
 		if ( !$footer->isBlank() ) {
 			$out->addHTML( '<div id="bottom-notice">' . $footer->parse() . '</div>' );
+			$needStyles = true;
 		}
 		if ( !$nsfooter->isBlank() ) {
 			$out->addHTML( '<div id="bottom-notice-ns">' . $nsfooter->parse() . '</div>' );
+			$needStyles = true;
+		}
+
+		if ( $needStyles ) {
+			$out->addModuleStyles( 'ext.pageNotice' );
 		}
 
 		return true;
