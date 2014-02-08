@@ -29,6 +29,9 @@ $wgExtensionCredits['other'][] = array(
 	'descriptionmsg' => 'pagenotice-desc',
 );
 
+// Disable notices for individual pages, and only allow namespace-wide notices?
+$wgPageNoticeDisablePerPageNotices = false;
+
 $dir = __DIR__;
 $wgAutoloadClasses['PageNoticeHooks'] = $dir . '/PageNotice.hooks.php';
 $wgExtensionMessagesFiles['PageNotice'] = $dir . '/PageNotice.i18n.php';

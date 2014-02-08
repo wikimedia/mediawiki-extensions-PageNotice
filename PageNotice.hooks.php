@@ -18,6 +18,8 @@ class PageNoticeHooks {
 	 * @return bool
 	 */
 	public static function renderHeader( Article &$article, &$outputDone, &$pcache ) {
+		global $wgPageNoticeDisablePerPageNotices;
+
 		$out = $article->getContext()->getOutput();
 		$title = $out->getTitle();
 		$name = $title->getPrefixedDBKey();
@@ -28,7 +30,7 @@ class PageNoticeHooks {
 
 		$needStyles = false;
 
-		if ( !$header->isBlank() ) {
+		if ( !$wgPageNoticeDisablePerPageNotices && !$header->isBlank() ) {
 			$out->addHTML( '<div id="top-notice">' . $header->parse() . '</div>' );
 			$needStyles = true;
 		}
@@ -50,6 +52,8 @@ class PageNoticeHooks {
 	 * @return bool
 	 */
 	public static function renderFooter( Article $article ) {
+		global $wgPageNoticeDisablePerPageNotices;
+
 		$out = $article->getContext()->getOutput();
 		$title = $out->getTitle();
 		$name = $title->getPrefixedDBKey();
@@ -60,7 +64,7 @@ class PageNoticeHooks {
 
 		$needStyles = false;
 
-		if ( !$footer->isBlank() ) {
+		if ( !$wgPageNoticeDisablePerPageNotices && !$footer->isBlank() ) {
 			$out->addHTML( '<div id="bottom-notice">' . $footer->parse() . '</div>' );
 			$needStyles = true;
 		}
