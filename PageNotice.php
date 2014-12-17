@@ -6,7 +6,7 @@
  * For page Foo, MediaWiki:top-notice-Foo and MediaWiki:bottom-notice-Foo can be used to defined a header
  * or footer respectively. For namespace 6, MediaWiki:top-notice-ns-6 and MediaWiki:bottom-notice-ns-6 can
  * be used to defined a header or footer respectively. Mind the capitalization.
- * 
+ *
  * For more info see http://mediawiki.org/wiki/Extension:PageNotice
  *
  * @file
@@ -21,37 +21,17 @@ if( !defined( 'MEDIAWIKI' ) ) {
 	die( 1 );
 }
 
-$wgExtensionCredits['other'][] = array( 
-	'path' => __FILE__,
-	'name' => 'PageNotice', 
-	'author' => 'Daniel Kinzler', 
-	'url' => 'http://mediawiki.org/wiki/Extension:PageNotice',
-	'description' => 'lets you define a fixed header or footer message for each page or namespace.',
+$wgExtensionCredits['other'][] = array(
+	'path'           => __FILE__,
+	'name'           => 'PageNotice',
+	'author'         => 'Daniel Kinzler',
+	'url'            => 'https://mediawiki.org/wiki/Extension:PageNotice',
+	'descriptionmsg' => 'pagenotice-desc',
 );
 
-$wgHooks['OutputPageBeforeHTML'][] = 'wfPageNoticeHook';
-
-
-function wfPageNoticeHook( &$out, &$text ) {
-	$name = $out->getTitle()->getPrefixedDBKey();
-	$ns = $out->getTitle()->getNamespace();
-	
-	$opt = array(
-		'parseinline',
-	);
-	
-	$header = wfMsgExt("top-notice-$name", $opt);
-	$nsheader = wfMsgExt("top-notice-ns-$ns", $opt);
-	
-	$footer = wfMsgExt("bottom-notice-$name", $opt);
-	$nsfooter = wfMsgExt("bottom-notice-ns-$ns", $opt);
-	
-	if (!wfEmptyMsg("top-notice-$name", $header)) $text = "<div>$header</div>\n$text";
-	if (!wfEmptyMsg("top-notice-ns-$ns", $nsheader)) $text = "<div>$nsheader</div>\n$text";
-	
-	if (!wfEmptyMsg("bottom-notice-$name", $footer)) $text = "$text\n<div>$footer</div>";
-	if (!wfEmptyMsg("bottom-notice-ns-$ns", $nsfooter)) $text = "$text\n<div>$nsfooter</div>";
-	
-	return true;
-}
-
+$dir = __DIR__;
+$wgAutoloadClasses['PageNoticeHooks'] = $dir . '/PageNotice.hooks.php';
+$wgExtensionMessagesFiles['PageNotice'] = $dir . '/PageNotice.i18n.php';
+$wgMessagesDirs['PageNotice'] = __DIR__ . '/i18n';
+$wgHooks['ArticleViewHeader'][] = 'PageNoticeHooks::renderHeader';
+$wgHooks['ArticleViewFooter'][] = 'PageNoticeHooks::renderFooter';
