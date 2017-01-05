@@ -1,4 +1,8 @@
 {
-	"@metadata": [],
-	"pagenotice-desc": "Extension description displayed on [[Special:Version]]"
+	"@metadata": {
+		"authors": [
+			"Umherirrender"
+		]
+	},
+	"pagenotice-desc": "{{desc|name=PageNotice|url=https://www.mediawiki.org/wiki/Extension:PageNotice}}"
 }
