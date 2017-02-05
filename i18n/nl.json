@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Esketti"
+			"Esketti",
+			"Mainframe98"
 		]
 	},
-	"pagenotice-desc": "Hiermee kunt u definiëren een vaste kop-of voettekst weergegeven voor elke naamruimte of individuele pagina"
+	"pagenotice-desc": "Hiermee kunt u een vaste kop-of voettekst definiëren voor elke naamruimte of individuele pagina"
 }
