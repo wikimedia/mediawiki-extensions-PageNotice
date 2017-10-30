@@ -34,7 +34,6 @@ $wgPageNoticeDisablePerPageNotices = false;
 
 $dir = __DIR__;
 $wgAutoloadClasses['PageNoticeHooks'] = $dir . '/PageNotice.hooks.php';
-$wgExtensionMessagesFiles['PageNotice'] = $dir . '/PageNotice.i18n.php';
 $wgMessagesDirs['PageNotice'] = __DIR__ . '/i18n';
 $wgHooks['ArticleViewHeader'][] = 'PageNoticeHooks::renderHeader';
 $wgHooks['ArticleViewFooter'][] = 'PageNoticeHooks::renderFooter';
