@@ -1,0 +1,40 @@
+{
+	"name": "PageNotice",
+	"author": "Daniel Kinzler",
+	"url": "https://www.mediawiki.org/wiki/Extension:PageNotice",
+	"descriptionmsg": "pagenotice-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.29.0"
+	},
+	"MessagesDirs": {
+		"PageNotice": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"PageNoticeHooks": "PageNotice.hooks.php"
+	},
+	"ResourceModules": {
+		"ext.pageNotice": {
+			"styles": [
+				"modules/ext.pageNotice.css"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "extensions/PageNotice"
+	},
+	"Hooks": {
+		"ArticleViewHeader": "PageNoticeHooks::renderHeader",
+		"ArticleViewFooter": "PageNoticeHooks::renderFooter"
+	},
+	"config": {
+		"PageNoticeDisablePerPageNotices": {
+			"value": false
+		}
+	},
+	"manifest_version": 2
+}
