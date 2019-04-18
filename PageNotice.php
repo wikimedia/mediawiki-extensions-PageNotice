@@ -7,7 +7,7 @@
  * or footer respectively. For namespace 6, MediaWiki:top-notice-ns-6 and MediaWiki:bottom-notice-ns-6 can
  * be used to defined a header or footer respectively. Mind the capitalization.
  *
- * For more info see http://mediawiki.org/wiki/Extension:PageNotice
+ * For more info see https://mediawiki.org/wiki/Extension:PageNotice
  *
  * @file
  * @ingroup Extensions
