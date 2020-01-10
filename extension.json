@@ -14,7 +14,7 @@
 		]
 	},
 	"AutoloadClasses": {
-		"PageNoticeHooks": "PageNotice.hooks.php"
+		"PageNoticeHooks": "includes/PageNoticeHooks.php"
 	},
 	"ResourceModules": {
 		"ext.pageNotice": {
