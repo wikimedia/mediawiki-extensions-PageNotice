@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe",
-			"Fitoschido"
+			"Fitoschido",
+			"Macofe"
 		]
 	},
 	"pagenotice-desc": "Permite definir un mensaje fijo de cabecera o de pie de página para cada espacio de nombres o página individual"
