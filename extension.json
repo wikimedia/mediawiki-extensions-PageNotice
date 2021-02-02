@@ -28,8 +28,8 @@
 		"remoteExtPath": "extensions/PageNotice"
 	},
 	"Hooks": {
-		"ArticleViewHeader": "PageNoticeHooks::renderHeader",
-		"ArticleViewFooter": "PageNoticeHooks::renderFooter"
+		"ArticleViewHeader": "PageNoticeHooks::onArticleViewHeader",
+		"ArticleViewFooter": "PageNoticeHooks::onArticleViewFooter"
 	},
 	"config": {
 		"PageNoticeDisablePerPageNotices": {

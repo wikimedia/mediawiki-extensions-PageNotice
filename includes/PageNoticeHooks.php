@@ -12,13 +12,15 @@
 class PageNoticeHooks {
 	/**
 	 * Renders relevant header notices for the current page.
-	 * @param Article &$article
+	 * @param Article $article
 	 * @param bool &$outputDone
 	 * @param bool &$pcache
-	 * @return bool
+	 * @return bool always true
 	 */
-	public static function renderHeader( Article &$article, &$outputDone, &$pcache ) {
-		global $wgPageNoticeDisablePerPageNotices;
+	public static function onArticleViewHeader( Article $article, &$outputDone, &$pcache ) {
+		$pageNoticeDisablePerPageNotices = $article->getContext()
+			->getConfig()
+			->get( 'PageNoticeDisablePerPageNotices' );
 
 		$out = $article->getContext()->getOutput();
 		$title = $out->getTitle();
@@ -30,12 +32,24 @@ class PageNoticeHooks {
 
 		$needStyles = false;
 
-		if ( !$wgPageNoticeDisablePerPageNotices && !$header->isBlank() ) {
-			$out->addHTML( '<div id="top-notice">' . $header->parse() . '</div>' );
+		if ( !$pageNoticeDisablePerPageNotices && !$header->isBlank() ) {
+			$out->addHTML(
+				Html::rawElement(
+					'div',
+					[ 'id' => 'top-notice' ],
+					$header->parse()
+				)
+			);
 			$needStyles = true;
 		}
 		if ( !$nsheader->isBlank() ) {
-			$out->addHTML( '<div id="top-notice-ns">' . $nsheader->parse() . '</div>' );
+			$out->addHTML(
+				Html::rawElement(
+					'div',
+					[ 'id' => 'top-notice-ns' ],
+					$nsheader->parse()
+				)
+			);
 			$needStyles = true;
 		}
 
@@ -49,10 +63,13 @@ class PageNoticeHooks {
 	/**
 	 * Renders relevant footer notices for the current page.
 	 * @param Article $article
-	 * @return bool
+	 * @param bool $patrolFooterShown
+	 * @return bool always true
 	 */
-	public static function renderFooter( Article $article ) {
-		global $wgPageNoticeDisablePerPageNotices;
+	public static function onArticleViewFooter( Article $article, $patrolFooterShown ) {
+		$pageNoticeDisablePerPageNotices = $article->getContext()
+			->getConfig()
+			->get( 'PageNoticeDisablePerPageNotices' );
 
 		$out = $article->getContext()->getOutput();
 		$title = $out->getTitle();
@@ -64,7 +81,7 @@ class PageNoticeHooks {
 
 		$needStyles = false;
 
-		if ( !$wgPageNoticeDisablePerPageNotices && !$footer->isBlank() ) {
+		if ( !$pageNoticeDisablePerPageNotices && !$footer->isBlank() ) {
 			$out->addHTML( '<div id="bottom-notice">' . $footer->parse() . '</div>' );
 			$needStyles = true;
 		}
