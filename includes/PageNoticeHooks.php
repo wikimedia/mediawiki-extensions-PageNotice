@@ -15,7 +15,6 @@ class PageNoticeHooks {
 	 * @param Article $article
 	 * @param bool &$outputDone
 	 * @param bool &$pcache
-	 * @return bool always true
 	 */
 	public static function onArticleViewHeader( Article $article, &$outputDone, &$pcache ) {
 		$pageNoticeDisablePerPageNotices = $article->getContext()
@@ -56,15 +55,12 @@ class PageNoticeHooks {
 		if ( $needStyles ) {
 			$out->addModuleStyles( 'ext.pageNotice' );
 		}
-
-		return true;
 	}
 
 	/**
 	 * Renders relevant footer notices for the current page.
 	 * @param Article $article
 	 * @param bool $patrolFooterShown
-	 * @return bool always true
 	 */
 	public static function onArticleViewFooter( Article $article, $patrolFooterShown ) {
 		$pageNoticeDisablePerPageNotices = $article->getContext()
@@ -93,7 +89,5 @@ class PageNoticeHooks {
 		if ( $needStyles ) {
 			$out->addModuleStyles( 'ext.pageNotice' );
 		}
-
-		return true;
 	}
 }
