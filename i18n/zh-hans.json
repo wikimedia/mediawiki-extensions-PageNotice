@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Xiplus"
 		]
 	},
-	"pagenotice-desc": "允许您为每个名字空间或个别页眉定义一个固定页眉或页脚的消息"
+	"pagenotice-desc": "允许您为每个命名空间或个别页眉定义一个固定页眉或页脚的消息"
 }
