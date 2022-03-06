@@ -9,7 +9,12 @@
  * @license GPL-2.0-or-later
  */
 
-class PageNoticeHooks {
+namespace MediaWiki\Extension\PageNotice;
+
+use Article;
+use Html;
+
+class Hooks {
 	/**
 	 * Renders relevant header notices for the current page.
 	 * @param Article $article

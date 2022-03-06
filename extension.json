@@ -6,15 +6,15 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.29.0"
+		"MediaWiki": ">= 1.31.0"
 	},
 	"MessagesDirs": {
 		"PageNotice": [
 			"i18n"
 		]
 	},
-	"AutoloadClasses": {
-		"PageNoticeHooks": "includes/PageNoticeHooks.php"
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\PageNotice\\": "includes"
 	},
 	"ResourceModules": {
 		"ext.pageNotice": {
@@ -28,8 +28,8 @@
 		"remoteExtPath": "extensions/PageNotice"
 	},
 	"Hooks": {
-		"ArticleViewHeader": "PageNoticeHooks::onArticleViewHeader",
-		"ArticleViewFooter": "PageNoticeHooks::onArticleViewFooter"
+		"ArticleViewHeader": "MediaWiki\\Extension\\PageNotice\\Hooks::onArticleViewHeader",
+		"ArticleViewFooter": "MediaWiki\\Extension\\PageNotice\\Hooks::onArticleViewFooter"
 	},
 	"config": {
 		"PageNoticeDisablePerPageNotices": {
