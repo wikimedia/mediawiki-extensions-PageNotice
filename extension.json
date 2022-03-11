@@ -14,7 +14,7 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extension\\PageNotice\\": "includes"
+		"MediaWiki\\Extension\\PageNotice\\": "includes/"
 	},
 	"ResourceModules": {
 		"ext.pageNotice": {
