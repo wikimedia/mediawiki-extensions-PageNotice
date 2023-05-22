@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Verdy p",
 			"Wladek92"
 		]
 	},
-	"pagenotice-desc": "Vous permet de définir un message d'en-tête fixe ou de pied pour chaque espace de noms ou page individuelle"
+	"pagenotice-desc": "Vous permet de définir un message fixe d’en-tête ou de pied de page pour chaque espace de noms ou chaque page individuelle"
 }
