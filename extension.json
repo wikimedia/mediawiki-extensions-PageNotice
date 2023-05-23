@@ -6,7 +6,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.31.0"
+		"MediaWiki": ">= 1.35.0"
 	},
 	"MessagesDirs": {
 		"PageNotice": [
@@ -27,9 +27,14 @@
 		"localBasePath": "",
 		"remoteExtPath": "extensions/PageNotice"
 	},
+	"HookHandlers": {
+		"Hooks": {
+			"class": "MediaWiki\\Extension\\PageNotice\\Hooks"
+		}
+	},
 	"Hooks": {
-		"ArticleViewHeader": "MediaWiki\\Extension\\PageNotice\\Hooks::onArticleViewHeader",
-		"ArticleViewFooter": "MediaWiki\\Extension\\PageNotice\\Hooks::onArticleViewFooter"
+		"ArticleViewHeader": "Hooks",
+		"ArticleViewFooter": "Hooks"
 	},
 	"config": {
 		"PageNoticeDisablePerPageNotices": {

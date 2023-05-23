@@ -13,15 +13,17 @@ namespace MediaWiki\Extension\PageNotice;
 
 use Article;
 use Html;
+use MediaWiki\Page\Hook\ArticleViewFooterHook;
+use MediaWiki\Page\Hook\ArticleViewHeaderHook;
 
-class Hooks {
+class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 	/**
 	 * Renders relevant header notices for the current page.
 	 * @param Article $article
 	 * @param bool &$outputDone
 	 * @param bool &$pcache
 	 */
-	public static function onArticleViewHeader( Article $article, &$outputDone, &$pcache ) {
+	public function onArticleViewHeader( $article, &$outputDone, &$pcache ) {
 		$pageNoticeDisablePerPageNotices = $article->getContext()
 			->getConfig()
 			->get( 'PageNoticeDisablePerPageNotices' );
@@ -67,7 +69,7 @@ class Hooks {
 	 * @param Article $article
 	 * @param bool $patrolFooterShown
 	 */
-	public static function onArticleViewFooter( Article $article, $patrolFooterShown ) {
+	public function onArticleViewFooter( $article, $patrolFooterShown ) {
 		$pageNoticeDisablePerPageNotices = $article->getContext()
 			->getConfig()
 			->get( 'PageNoticeDisablePerPageNotices' );
