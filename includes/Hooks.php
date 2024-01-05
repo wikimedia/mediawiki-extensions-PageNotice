@@ -12,7 +12,7 @@
 namespace MediaWiki\Extension\PageNotice;
 
 use Article;
-use Html;
+use MediaWiki\Html\Html;
 use MediaWiki\Page\Hook\ArticleViewFooterHook;
 use MediaWiki\Page\Hook\ArticleViewHeaderHook;
 
