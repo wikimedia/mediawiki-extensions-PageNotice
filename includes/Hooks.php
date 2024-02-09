@@ -12,11 +12,48 @@
 namespace MediaWiki\Extension\PageNotice;
 
 use Article;
-use MediaWiki\Html\Html;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\Page\Hook\ArticleViewFooterHook;
 use MediaWiki\Page\Hook\ArticleViewHeaderHook;
+use Wikimedia\Assert\Assert;
 
 class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
+
+	private function addNotice( IContextSource $context, string $position ): void {
+		Assert::parameter(
+			in_array( $position, [ 'top', 'bottom' ], true ),
+			'position',
+			'must be "top" or "bottom"',
+		);
+
+		$out = $context->getOutput();
+		$title = $context->getTitle();
+		$name = $title->getPrefixedDBKey();
+		$ns = $title->getNamespace();
+
+		if ( !$context->getConfig()->get( 'PageNoticeDisablePerPageNotices' ) ) {
+			// Messages:
+			// * top-notice-<page name with ucfirst and spaces to underscores>
+			// * bottom-notice-<page name with ucfirst and spaces to underscores>
+			$header = $context->msg( "$position-notice-$name" );
+			if ( !$header->isBlank() ) {
+				$wikitext = "<div id='$position-notice'>{$header->plain()}</div>";
+				$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice", $wikitext );
+				$out->addModuleStyles( 'ext.pageNotice' );
+			}
+		}
+
+		// Messages:
+		// * top-notice-ns-<namespace id>
+		// * bottom-notice-ns-<namespace id>
+		$nsheader = $context->msg( "$position-notice-ns-$ns" );
+		if ( !$nsheader->isBlank() ) {
+			$wikitext = "<div id='$position-notice-ns'>{$nsheader->plain()}</div>";
+			$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice-ns", $wikitext );
+			$out->addModuleStyles( 'ext.pageNotice' );
+		}
+	}
+
 	/**
 	 * Renders relevant header notices for the current page.
 	 * @param Article $article
@@ -24,44 +61,7 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 	 * @param bool &$pcache
 	 */
 	public function onArticleViewHeader( $article, &$outputDone, &$pcache ) {
-		$pageNoticeDisablePerPageNotices = $article->getContext()
-			->getConfig()
-			->get( 'PageNoticeDisablePerPageNotices' );
-
-		$out = $article->getContext()->getOutput();
-		$title = $out->getTitle();
-		$name = $title->getPrefixedDBKey();
-		$ns = $title->getNamespace();
-
-		$header = $out->msg( "top-notice-$name" );
-		$nsheader = $out->msg( "top-notice-ns-$ns" );
-
-		$needStyles = false;
-
-		if ( !$pageNoticeDisablePerPageNotices && !$header->isBlank() ) {
-			$out->addHTML(
-				Html::rawElement(
-					'div',
-					[ 'id' => 'top-notice' ],
-					$header->parse()
-				)
-			);
-			$needStyles = true;
-		}
-		if ( !$nsheader->isBlank() ) {
-			$out->addHTML(
-				Html::rawElement(
-					'div',
-					[ 'id' => 'top-notice-ns' ],
-					$nsheader->parse()
-				)
-			);
-			$needStyles = true;
-		}
-
-		if ( $needStyles ) {
-			$out->addModuleStyles( 'ext.pageNotice' );
-		}
+		$this->addNotice( $article->getContext(), 'top' );
 	}
 
 	/**
@@ -70,31 +70,6 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 	 * @param bool $patrolFooterShown
 	 */
 	public function onArticleViewFooter( $article, $patrolFooterShown ) {
-		$pageNoticeDisablePerPageNotices = $article->getContext()
-			->getConfig()
-			->get( 'PageNoticeDisablePerPageNotices' );
-
-		$out = $article->getContext()->getOutput();
-		$title = $out->getTitle();
-		$name = $title->getPrefixedDBKey();
-		$ns = $title->getNamespace();
-
-		$footer = $out->msg( "bottom-notice-$name" );
-		$nsfooter = $out->msg( "bottom-notice-ns-$ns" );
-
-		$needStyles = false;
-
-		if ( !$pageNoticeDisablePerPageNotices && !$footer->isBlank() ) {
-			$out->addHTML( '<div id="bottom-notice">' . $footer->parse() . '</div>' );
-			$needStyles = true;
-		}
-		if ( !$nsfooter->isBlank() ) {
-			$out->addHTML( '<div id="bottom-notice-ns">' . $nsfooter->parse() . '</div>' );
-			$needStyles = true;
-		}
-
-		if ( $needStyles ) {
-			$out->addModuleStyles( 'ext.pageNotice' );
-		}
+		$this->addNotice( $article->getContext(), 'bottom' );
 	}
 }
