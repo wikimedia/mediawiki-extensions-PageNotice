@@ -16,6 +16,9 @@
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\PageNotice\\": "includes/"
 	},
+	"TestAutoloadNamespaces": {
+		"MediaWiki\\Extension\\PageNotice\\Tests\\": "tests/phpunit/integration/"
+	},
 	"ResourceModules": {
 		"ext.pageNotice": {
 			"styles": [
