@@ -76,6 +76,24 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( ':3', $output );
 	}
 
+	public function testAddNoticeGlobally(): void {
+		$context = $this->getContext(
+			Title::makeTitle( NS_MAIN, 'Sleep is important!' ),
+			new HashConfig( [ 'PageNoticeDisablePerPageNotices' => false ] ),
+			[
+				'top-notice-global' => new RawMessage( 'Love is love' ),
+				'bottom-notice-global' => new RawMessage( 'Bisexuality is not a phase' ),
+			],
+		);
+
+		$this->addNotice( $context, 'top' );
+		$this->addNotice( $context, 'bottom' );
+
+		$output = $context->getOutput()->getHTML();
+		$this->assertStringContainsString( 'Love is love', $output );
+		$this->assertStringContainsString( 'Bisexuality is not a phase', $output );
+	}
+
 	public function testAddNoticeDisabledPerPage(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Catboys are cute' ),

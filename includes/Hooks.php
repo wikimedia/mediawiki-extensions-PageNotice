@@ -52,6 +52,16 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 			$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice-ns", $wikitext );
 			$out->addModuleStyles( 'ext.pageNotice' );
 		}
+
+		// Messages:
+		// * top-notice-global
+		// * bottom-notice-global
+		$globalheader = $context->msg( "$position-notice-global" );
+		if ( !$globalheader->isBlank() ) {
+			// The <div> ID wrapper is intentionally omitted here as the previous ones
+			// were (mostly) for backwards compatibility
+			$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice-global", $globalheader->plain() );
+		}
 	}
 
 	/**
