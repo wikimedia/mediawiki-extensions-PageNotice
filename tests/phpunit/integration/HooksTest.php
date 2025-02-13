@@ -13,7 +13,7 @@ use MediaWikiIntegrationTestCase;
 use Wikimedia\TestingAccessWrapper;
 
 /**
- * @coversDefaultClass MediaWiki\Extension\PageNotice\Hooks
+ * @covers \MediaWiki\Extension\PageNotice\Hooks
  */
 class HooksTest extends MediaWikiIntegrationTestCase {
 
@@ -40,10 +40,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		TestingAccessWrapper::newFromObject( new Hooks )->addNotice( $context, $position );
 	}
 
-	/**
-	 * @covers ::onArticleViewHeader
-	 * @covers ::onArticleViewFooter
-	 */
 	public function testAddNoticePerPage(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Ity' ),
@@ -62,10 +58,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( 'for sale!', $output );
 	}
 
-	/**
-	 * @covers ::onArticleViewHeader
-	 * @covers ::onArticleViewFooter
-	 */
 	public function testAddNoticePerNamespace(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Sharkgirls' ),
@@ -84,10 +76,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( ':3', $output );
 	}
 
-	/**
-	 * @covers ::onArticleViewHeader
-	 * @covers ::onArticleViewFooter
-	 */
 	public function testAddNoticeDisabledPerPage(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Catboys are cute' ),
@@ -105,9 +93,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( '', $output );
 	}
 
-	/**
-	 * @covers ::onArticleViewHeader
-	 */
 	public function testNoticeAddsIndicator(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Be gay do crime' ),
@@ -123,10 +108,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayHasKey( 'fox', $indicators );
 	}
 
-	/**
-	 * @covers ::onArticleViewHeader
-	 * @covers ::onArticleViewFooter
-	 */
 	public function testModuleAddedOnlyOnce(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Enbies are cute too' ),
@@ -146,10 +127,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( [ 'ext.pageNotice' ], $moduleStyles );
 	}
 
-	/**
-	 * @covers ::onArticleViewHeader
-	 * @covers ::onArticleViewFooter
-	 */
 	public function testModuleNotAddedIfUnused(): void {
 		$context = $this->getContext(
 			Title::makeTitle( NS_MAIN, 'Foxgirls' ),
