@@ -107,37 +107,4 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$indicators = $context->getOutput()->getIndicators();
 		$this->assertArrayHasKey( 'fox', $indicators );
 	}
-
-	public function testModuleAddedOnlyOnce(): void {
-		$context = $this->getContext(
-			Title::makeTitle( NS_MAIN, 'Enbies are cute too' ),
-			new HashConfig( [ 'PageNoticeDisablePerPageNotices' => false ] ),
-			[
-				'top-notice-ns-0' => new RawMessage( 'Let\'s' ),
-				'top-notice-Enbies_are_cute_too' => new RawMessage( 'Get' ),
-				'bottom-notice-Enbies_are_cute_too' => new RawMessage( 'Burger' ),
-				'bottom-notice-ns-0' => new RawMessage( 'Today' ),
-			],
-		);
-
-		$this->addNotice( $context, 'top' );
-		$this->addNotice( $context, 'bottom' );
-
-		$moduleStyles = $context->getOutput()->getModuleStyles();
-		$this->assertSame( [ 'ext.pageNotice' ], $moduleStyles );
-	}
-
-	public function testModuleNotAddedIfUnused(): void {
-		$context = $this->getContext(
-			Title::makeTitle( NS_MAIN, 'Foxgirls' ),
-			new HashConfig( [ 'PageNoticeDisablePerPageNotices' => false ] ),
-			[],
-		);
-
-		$this->addNotice( $context, 'top' );
-		$this->addNotice( $context, 'bottom' );
-
-		$moduleStyles = $context->getOutput()->getModuleStyles();
-		$this->assertSame( [], $moduleStyles );
-	}
 }

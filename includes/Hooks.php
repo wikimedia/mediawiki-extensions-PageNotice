@@ -39,7 +39,6 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 			if ( !$header->isBlank() ) {
 				$wikitext = "<div id='$position-notice'>{$header->plain()}</div>";
 				$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice", $wikitext );
-				$out->addModuleStyles( 'ext.pageNotice' );
 			}
 		}
 
@@ -50,7 +49,6 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 		if ( !$nsheader->isBlank() ) {
 			$wikitext = "<div id='$position-notice-ns'>{$nsheader->plain()}</div>";
 			$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice-ns", $wikitext );
-			$out->addModuleStyles( 'ext.pageNotice' );
 		}
 	}
 

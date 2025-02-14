@@ -19,17 +19,6 @@
 	"TestAutoloadNamespaces": {
 		"MediaWiki\\Extension\\PageNotice\\Tests\\": "tests/phpunit/integration/"
 	},
-	"ResourceModules": {
-		"ext.pageNotice": {
-			"styles": [
-				"modules/ext.pageNotice.css"
-			]
-		}
-	},
-	"ResourceFileModulePaths": {
-		"localBasePath": "",
-		"remoteExtPath": "extensions/PageNotice"
-	},
 	"HookHandlers": {
 		"Hooks": {
 			"class": "MediaWiki\\Extension\\PageNotice\\Hooks"
