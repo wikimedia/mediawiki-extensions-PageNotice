@@ -18,6 +18,9 @@ use Wikimedia\TestingAccessWrapper;
 class HooksTest extends MediaWikiIntegrationTestCase {
 
 	private function getContext( Title $title, Config $config, array $messages ): IContextSource {
+		// force content model to prevent database access
+		$title->setContentModel( 'wikitext' );
+
 		$output = RequestContext::newExtraneousContext( $title )->getOutput();
 
 		// We construct a mock context instead of using an actual RequestContext
@@ -37,7 +40,8 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 	}
 
 	private function addNotice( IContextSource $context, string $position ): void {
-		TestingAccessWrapper::newFromObject( new Hooks )->addNotice( $context, $position );
+		TestingAccessWrapper::newFromObject( new Hooks( $this->getServiceContainer()->getParserFactory() ) )
+			->addNotice( $context, $position );
 	}
 
 	public function testAddNoticePerPage(): void {
@@ -64,7 +68,7 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 			new HashConfig( [ 'PageNoticeDisablePerPageNotices' => false ] ),
 			[
 				'top-notice-ns-0' => new RawMessage( 'Trans rights are human rights' ),
-				'bottom-notice-ns-0' => new RawMessage( ':3' ),
+				'bottom-notice-ns-0' => new RawMessage( '<nowiki>:3</nowiki>' ),
 			],
 		);
 
@@ -124,5 +128,28 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 
 		$indicators = $context->getOutput()->getIndicators();
 		$this->assertArrayHasKey( 'fox', $indicators );
+	}
+
+	public function testWikitextTablesAreParsedInNotices(): void {
+		$context = $this->getContext(
+			Title::makeTitle( NS_MAIN, 'WikitextTables' ),
+			new HashConfig( [ 'PageNoticeDisablePerPageNotices' => false ] ),
+			[
+				'top-notice-WikitextTables' => new RawMessage( <<<EOT
+{| class=\"wikitable\"
+! Header 1 !! Header 2
+|-
+| Row 1 || Row 2
+|}
+EOT
+				),
+			],
+		);
+
+		$this->addNotice( $context, 'top' );
+
+		$output = $context->getOutput()->getHTML();
+		$this->assertStringContainsString( '<table', $output );
+		$this->assertStringContainsString( '<td>Row 1</td>', $output );
 	}
 }

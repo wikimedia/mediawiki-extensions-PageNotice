@@ -21,7 +21,10 @@
 	},
 	"HookHandlers": {
 		"Hooks": {
-			"class": "MediaWiki\\Extension\\PageNotice\\Hooks"
+			"class": "MediaWiki\\Extension\\PageNotice\\Hooks",
+			"services": [
+				"ParserFactory"
+			]
 		}
 	},
 	"Hooks": {

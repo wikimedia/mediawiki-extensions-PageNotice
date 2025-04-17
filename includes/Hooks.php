@@ -12,12 +12,29 @@
 namespace MediaWiki\Extension\PageNotice;
 
 use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Page\Article;
 use MediaWiki\Page\Hook\ArticleViewFooterHook;
 use MediaWiki\Page\Hook\ArticleViewHeaderHook;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserFactory;
+use MediaWiki\Parser\ParserOptions;
 use Wikimedia\Assert\Assert;
 
 class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
+
+	private ParserFactory $parserFactory;
+	private ?Parser $parser = null;
+
+	/**
+	 * @param ParserFactory $parserFactory
+	 */
+	public function __construct(
+		ParserFactory $parserFactory
+	) {
+		$this->parserFactory = $parserFactory;
+	}
 
 	private function addNotice( IContextSource $context, string $position ): void {
 		Assert::parameter(
@@ -37,8 +54,8 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 			// * bottom-notice-<page name with ucfirst and spaces to underscores>
 			$header = $context->msg( "$position-notice-$name" );
 			if ( !$header->isBlank() ) {
-				$wikitext = "<div id='$position-notice'>{$header->plain()}</div>";
-				$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice", $wikitext );
+				$this->wrapPageNotice( $out, $header->plain(), "ext-pagenotice-$position-notice",
+					"$position-notice" );
 			}
 		}
 
@@ -47,8 +64,8 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 		// * bottom-notice-ns-<namespace id>
 		$nsheader = $context->msg( "$position-notice-ns-$ns" );
 		if ( !$nsheader->isBlank() ) {
-			$wikitext = "<div id='$position-notice-ns'>{$nsheader->plain()}</div>";
-			$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice-ns", $wikitext );
+			$this->wrapPageNotice( $out, $nsheader->plain(), "ext-pagenotice-$position-notice-ns",
+				"$position-notice-ns" );
 		}
 
 		// Messages:
@@ -56,10 +73,41 @@ class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 		// * bottom-notice-global
 		$globalheader = $context->msg( "$position-notice-global" );
 		if ( !$globalheader->isBlank() ) {
-			// The <div> ID wrapper is intentionally omitted here as the previous ones
+			// The ID for the inner <div> wrapper is intentionally not provided here as the previous ones
 			// were (mostly) for backwards compatibility
-			$out->wrapWikiTextAsInterface( "ext-pagenotice-$position-notice-global", $globalheader->plain() );
+			$this->wrapPageNotice( $out, $globalheader->plain(), "ext-pagenotice-$position-notice-global",
+				null );
 		}
+	}
+
+	/**
+	 * Wraps the given page notice in a <div> with the given class.
+	 * Optionally adds an inner wrapper with an ID, used for backwards compatibility.
+	 *
+	 * @param OutputPage $out The output page to add the notice to
+	 * @param string $wikitext The wikitext of the notice
+	 * @param string $wrapperClass The class to add to the outer <div>
+	 * @param ?string $innerWrapperId The ID to add to the inner <div> wrapper, or null if not needed
+	 */
+	private function wrapPageNotice(
+		OutputPage $out, string $wikitext, string $wrapperClass, ?string $innerWrapperId
+	): void {
+		$this->parser ??= $this->parserFactory->create();
+		// workaround for T392226 to properly parse tables
+		$this->parser->startExternalParse( $out->getTitle(), ParserOptions::newFromContext( $out->getContext() ),
+			Parser::OT_HTML );
+
+		$result = $this->parser->recursiveTagParseFully( $wikitext );
+		// remove outer <p> if present to avoid unwanted margins around the notice
+		$result = Parser::stripOuterParagraph( $result );
+
+		// add metadata to support page indicators
+		$out->addParserOutputMetadata( $this->parser->getOutput() );
+		if ( $innerWrapperId !== null ) {
+			// add inner wrapper with an ID for backwards compatibility
+			$result = Html::rawElement( 'div', [ 'id' => $innerWrapperId ], $result );
+		}
+		$out->addHTML( Html::rawElement( 'div', [ 'class' => $wrapperClass ], $result ) );
 	}
 
 	/**
