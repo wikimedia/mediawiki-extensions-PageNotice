@@ -11,8 +11,8 @@
 
 namespace MediaWiki\Extension\PageNotice;
 
-use Article;
 use MediaWiki\Context\IContextSource;
+use MediaWiki\Page\Article;
 use MediaWiki\Page\Hook\ArticleViewFooterHook;
 use MediaWiki\Page\Hook\ArticleViewHeaderHook;
 use Wikimedia\Assert\Assert;
