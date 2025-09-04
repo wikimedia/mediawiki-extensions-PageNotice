@@ -24,16 +24,11 @@ use Wikimedia\Assert\Assert;
 
 class Hooks implements ArticleViewHeaderHook, ArticleViewFooterHook {
 
-	private ParserFactory $parserFactory;
 	private ?Parser $parser = null;
 
-	/**
-	 * @param ParserFactory $parserFactory
-	 */
 	public function __construct(
-		ParserFactory $parserFactory
+		private readonly ParserFactory $parserFactory,
 	) {
-		$this->parserFactory = $parserFactory;
 	}
 
 	private function addNotice( IContextSource $context, string $position ): void {
